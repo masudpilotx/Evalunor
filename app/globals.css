@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Evalunor design tokens
+   Single source of truth for the visual system. Retune here.
+   ------------------------------------------------------------------ */
+:root {
+  --background: #08090b;
+  --foreground: #f4f5f2;
+
+  --card: #0e1116;
+  --card-foreground: #f4f5f2;
+
+  --muted: #14181d;
+  --muted-foreground: #8b949e;
+
+  --primary: #c6f24e;
+  --primary-foreground: #101604;
+
+  --secondary: #1a1f26;
+  --secondary-foreground: #e6e8e3;
+
+  --accent: #c6f24e;
+  --accent-foreground: #101604;
+
+  --border: #1e242b;
+  --input: #1e242b;
+  --ring: #c6f24e;
+
+  --radius: 0.625rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter-tight), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@theme {
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-case-scroll: case-scroll 4s cubic-bezier(0.22, 0.7, 0.2, 1) forwards;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @keyframes case-scroll {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% + 300px));
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    /* prevents mobile horizontal scroll from decorative overflow */
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--primary);
+    color: var(--primary-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Shared container: matches the reference's 1180px content column */
+  .container-page {
+    width: min(1180px, calc(100% - 2.5rem));
+    margin-inline: auto;
+  }
+
+  @media (min-width: 768px) {
+    .container-page {
+      width: min(1180px, calc(100% - 4rem));
+    }
+  }
+
+  /* Display heading: tight tracking, near-1 line height */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.055em;
+    line-height: 0.96;
+  }
+
+  /* Small uppercase kicker used above section headings */
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+}
+
+@layer utilities {
+  /* Scroll reveal, progressively enhanced by <Reveal /> */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  .reveal-in {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.65s ease var(--reveal-delay, 0ms),
+      transform 0.65s cubic-bezier(0.22, 0.7, 0.2, 1) var(--reveal-delay, 0ms);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
