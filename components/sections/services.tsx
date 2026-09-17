@@ -1,0 +1,9 @@
+import Link from "next/link";
+import { ArrowUpRight, Bot, FileSearch, Gauge, Globe2, Link2, MapPin, Network, PenLine, SearchCheck } from "lucide-react";
+import { Section } from "@/components/ui/section";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { Reveal } from "@/components/ui/reveal";
+import { services } from "@/lib/data/services";
+
+const icons = { technical: Gauge, onPage: SearchCheck, local: MapPin, enterprise: Network, audit: FileSearch, content: PenLine, links: Link2, consulting: Globe2, ai: Bot } as const;
+export function Services({ limit }: { limit?: number }) { const shown = limit ? services.slice(0, limit) : services; return <Section id="services" bordered tone="raised"><SectionHeading kicker="What we run" title={<>Nine disciplines, <em className="font-normal text-primary">one roadmap.</em></>} description="The tactics are specialised. The strategy is not fragmented." /><div className="mt-12 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">{shown.map((service, index) => { const Icon = icons[service.icon]; return <Reveal key={service.slug} delay={(index % 3) * 60}><Link href={`/services/${service.slug}`} className="group block h-full bg-background p-7 transition-colors hover:bg-card"><div className="flex items-start justify-between"><span className="font-mono text-[10px] tracking-[.16em] text-muted-foreground">{String(index + 1).padStart(2, "0")}</span><Icon className="size-5 text-primary transition-transform group-hover:scale-110" /></div><h3 className="mt-8 font-display text-xl font-semibold tracking-tight">{service.name}</h3><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{service.summary}</p><span className="mt-6 inline-flex items-center gap-1 text-xs font-semibold text-primary opacity-0 transition-opacity group-hover:opacity-100">Explore <ArrowUpRight className="size-3.5" /></span></Link></Reveal> })}</div></Section>; }
