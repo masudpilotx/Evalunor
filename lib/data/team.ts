@@ -28,7 +28,7 @@ export const team: readonly TeamMember[] = [
     bio: "Maps the questions buyers actually ask, then turns them into clusters, briefs and refresh cycles that rank with clarity instead of volume for its own sake.",
     focus: ["Intent mapping", "Editorial briefs", "Content decay"],
     photo: teamPhotos.rafayat,
-    objectPosition: "center 18%",
+    objectPosition: "center 8%",
   },
   {
     name: "Atick Shahariar Tusar",
@@ -37,6 +37,6 @@ export const team: readonly TeamMember[] = [
     bio: "Builds the authority layer: data-led campaigns, journalist relationships and reclamation work that make a brand more credible to people and to search engines.",
     focus: ["Digital PR", "Link acquisition", "Profile risk review"],
     photo: teamPhotos.tusar,
-    objectPosition: "center 8%",
+    objectPosition: "center 18%",
   },
 ];
