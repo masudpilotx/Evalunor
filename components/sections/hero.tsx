@@ -34,7 +34,10 @@ export function Hero() {
     <div className="overflow-hidden border-y border-border bg-card/40 py-6">
       <h2 className="sr-only">Platforms and tools the Evalunor team works in</h2>
       <div className="flex w-max animate-marquee items-center gap-14">
-        {[...toolLogos, ...toolLogos].map(({ name, Logo }, itemIndex) => <span key={`${name}-${itemIndex}`} aria-hidden={itemIndex >= toolLogos.length ? "true" : undefined} className="flex items-center gap-2.5 text-muted-foreground/70 transition-colors hover:text-foreground"><Logo /><span className="font-display text-sm font-semibold tracking-tight">{name}</span></span>)}
+        {[...toolLogos, ...toolLogos].map(({ name, path }, itemIndex) => <span key={`${name}-${itemIndex}`} aria-hidden={itemIndex >= toolLogos.length ? "true" : undefined} className="flex items-center gap-2.5 text-muted-foreground/60 transition-colors hover:text-foreground">
+          <svg viewBox="0 0 24 24" className="size-[21px] shrink-0" fill="currentColor" role="img" aria-label={`${name} logo`}><path d={path} /></svg>
+          <span className="font-display text-sm font-semibold tracking-tight">{name}</span>
+        </span>)}
       </div>
     </div>
   </section>;
