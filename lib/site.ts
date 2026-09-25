@@ -1,4 +1,42 @@
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://evalunor.com").replace(/\/$/, "");
+/** Canonical production origin, used when nothing is configured. */
+const fallbackSiteUrl = "https://evalunor.com";
+
+/**
+ * Resolve the absolute origin used for metadataBase, canonicals, robots and
+ * the sitemap.
+ *
+ * This has to be bulletproof: `metadataBase: new URL(siteUrl)` runs while Next
+ * collects page data, so a single bad value fails the whole production build
+ * (an env var set to an empty string used to slip past a `??` fallback and
+ * throw ERR_INVALID_URL). Every candidate is therefore trimmed, given a
+ * protocol if it lacks one, and validated before use.
+ */
+function resolveSiteUrl(): string {
+  const candidates = [
+    process.env.NEXT_PUBLIC_SITE_URL,
+    // Vercel exposes these automatically, so preview and production deploys
+    // still emit correct absolute URLs when nothing is configured by hand.
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    process.env.VERCEL_URL,
+    fallbackSiteUrl,
+  ];
+
+  for (const candidate of candidates) {
+    const value = candidate?.trim();
+    if (!value) continue;
+    const absolute = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+    try {
+      // .origin drops any path, query and trailing slash.
+      return new URL(absolute).origin;
+    } catch {
+      // Malformed value: ignore it and try the next candidate.
+    }
+  }
+
+  return fallbackSiteUrl;
+}
+
+export const siteUrl = resolveSiteUrl();
 
 export const site = {
   name: "Evalunor",
